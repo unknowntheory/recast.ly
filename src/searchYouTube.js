@@ -7,7 +7,7 @@ var searchYouTube = (options, callback) => {
   var url = 'https://www.googleapis.com/youtube/v3/search';
   var results = 'hello world';
 
-  $.ajaxSetup({ async: false });
+  //$.ajaxSetup({ async: false });
 
   var request = $.ajax({
     url: url,
@@ -19,6 +19,8 @@ var searchYouTube = (options, callback) => {
       'key': options.key
     },
     success: function(data) {
+      //console.log('success', data.items);
+      //results = data.items;
       return data;
     },
     error: function(data) {
@@ -29,7 +31,6 @@ var searchYouTube = (options, callback) => {
 
   request.done(function(data) {
     results = data.items;
-
   });
 
   console.log(results);
