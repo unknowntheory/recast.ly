@@ -84,6 +84,14 @@ body {
   padding-left: 20px;
 }
 
+.media {
+  transition-duration: 300ms;
+}
+
+.media:hover {
+  background: #d3d3d3;
+}
+
 h5 {
   border: 2px solid red;
   text-align: center;

@@ -30,10 +30,8 @@ var searchYouTube = (options, callback) => {
   });
 
   request.done(function(data) {
-    results = data.items;
+    callback(data.items);
   });
-
-  console.log(results);
   return results;
 };
 

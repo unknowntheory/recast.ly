@@ -1,9 +1,12 @@
 class App extends React.Component {
   constructor() {
     super();
-    this.results = searchYouTube();
+    this.results = searchYouTube({
+      key: window.YOUTUBE_API_KEY, 
+      query: 'hack reactor', 
+      max: 5
+    });
 
-    console.log(this.results);
 
 
     this.state = {
@@ -13,10 +16,8 @@ class App extends React.Component {
       videos: this.results
     };
 
-
-    
+    this.search = _.debounce(this.search.bind(this), 500);
   }
-
 
   handleClick(event) {
 
@@ -28,6 +29,37 @@ class App extends React.Component {
     });
   }
 
+  handleEnter(event) {
+    //if (event.keyCode === 13) {
+    this.search(event.target.value);
+    //}
+  }
+
+  handleSearch(event) {
+
+    //whatevers in the text box
+    var query = event.target.parentNode.childNodes[0].value;
+
+    this.search(query);
+    
+  }
+
+  search(query) {
+
+    var search = searchYouTube({
+      key: window.YOUTUBE_API_KEY, 
+      query: query, 
+      max: 10
+    });
+
+    this.setState({
+      title: search[0].snippet.title,
+      description: search[0].snippet.description,
+      id: search[0].id.videoId,
+      videos: search
+    });  
+  }
+
   render() {
     
 
@@ -35,12 +67,12 @@ class App extends React.Component {
       <div>
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
-            <Search />
+            <Search pressEnter={this.handleEnter.bind(this)} searchHandler={this.handleSearch.bind(this)}/>
           </div>
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <VideoPlayer title={this.state.title} description={this.state.description} id={this.state.id}/>
+            <VideoPlayer title={this.state.title} description={this.state.description} video={this.state.id}/>
           </div>
           <div className="col-md-5">
             <VideoList clickHandler={this.handleClick.bind(this)} videos={this.state.videos}/> 
